@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "pixi": "^0.3.1",
+    "typescript": "^3.9.3"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^4.3.0"
+  }
+}
