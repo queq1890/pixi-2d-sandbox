@@ -139,6 +139,7 @@ module.exports = {
       'error',
       {
         devDependencies: [
+          '*.config.js',
           '.storybook/**',
           'stories/**',
           '**/*/*.story.*',
