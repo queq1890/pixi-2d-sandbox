@@ -1,10 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-type Keys = 'right' | 'left' | 'up' | 'down';
+import { ALLOWED_KEY_TYPE } from '../constnats';
 
 interface ControllerState {
-  keys: Record<Keys, boolean>;
+  keys: Record<ALLOWED_KEY_TYPE, boolean>;
 }
 
 const initialState: ControllerState = {
@@ -13,6 +12,7 @@ const initialState: ControllerState = {
     left: false,
     up: false,
     down: false,
+    space: false,
   },
 };
 
@@ -20,11 +20,13 @@ const slice = createSlice({
   name: 'controller',
   initialState,
   reducers: {
-    keydown: (state, action: PayloadAction<Keys>) => {
+    keydown: (state, action: PayloadAction<ALLOWED_KEY_TYPE>) => {
+      console.log('prevState', state.keys);
       state.keys[action.payload] = true;
     },
-    keyup: (state, action: PayloadAction<Keys>) => {
-      state.keys[action.payload] = true;
+    keyup: (state, action: PayloadAction<ALLOWED_KEY_TYPE>) => {
+      console.log('prevState', state.keys);
+      state.keys[action.payload] = false;
     },
   },
 });
