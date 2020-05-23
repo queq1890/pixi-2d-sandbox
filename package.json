@@ -7,8 +7,10 @@
     "lint:format": "eslint --fix ."
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.3.6",
     "normalize.css": "^8.0.1",
     "pixi.js": "^5.2.4",
+    "redux": "^4.0.5",
     "typescript": "^3.9.3"
   },
   "devDependencies": {
