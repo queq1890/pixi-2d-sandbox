@@ -1,17 +1,21 @@
 import { TilingSprite, Texture } from 'pixi.js';
 import { app } from '../app';
-import { BG_SIZE } from '../constnats';
+import { store } from '../reducers';
+import { actions } from '../reducers/background';
+import { BG_SIZE, KEY_MAP } from '../constnats';
 
-// TODO: create domain model for each object
-// handle state logic with redux
+// TODO: stop using let
+// reorganize file structure
+// - src/components
+//  - index
+//  - events
+//  - reducers
 
 let bgBack: TilingSprite;
 let bgMiddle: TilingSprite;
 let bgFront: TilingSprite;
 
 let bgList: TilingSprite[];
-let bgX = 0;
-let bgSpeed = 1;
 
 const getBgScale = () => {
   return {
@@ -40,13 +44,15 @@ const createBg = (texture: Texture) => {
 };
 
 export const updateBg = () => {
-  bgX += bgSpeed;
-  bgFront.tilePosition.x = bgX;
-  bgMiddle.tilePosition.x = bgX / 2;
-  bgBack.tilePosition.x = bgX / 4;
+  store.dispatch(actions.incrementBgX());
+  const { x } = store.getState().background;
+
+  bgFront.tilePosition.x = x;
+  bgMiddle.tilePosition.x = x / 2;
+  bgBack.tilePosition.x = x / 4;
 };
 
-export const initBackground = () => {
+export const initBackground = (): void => {
   bgBack = createBg(app.loader.resources.bgBack.texture);
   bgMiddle = createBg(app.loader.resources.bgMiddle.texture);
   bgFront = createBg(app.loader.resources.bgFront.texture);
@@ -54,7 +60,7 @@ export const initBackground = () => {
   bgList = [bgBack, bgMiddle, bgFront];
 };
 
-export const resizeBg = () => {
+export const resizeBg = (): void => {
   const scale = getBgScale();
 
   bgList.forEach((bg) => {
@@ -66,22 +72,20 @@ export const resizeBg = () => {
   });
 };
 
-export const keydownBg = (event: KeyboardEvent) => {
+export const keydownBg = (event: KeyboardEvent): void => {
   switch (event.keyCode) {
-    case 39: {
-      bgSpeed -= 1;
+    case KEY_MAP.right: {
+      store.dispatch(actions.decrementBgSpeed());
       break;
     }
-    case 37: {
-      bgSpeed += 1;
+    case KEY_MAP.left: {
+      store.dispatch(actions.incrementBgSpeed());
       break;
     }
-
-    case 32: {
-      bgSpeed = 0;
+    case KEY_MAP.space: {
+      store.dispatch(actions.setSpeed(0));
       break;
     }
-
     default:
   }
 };
