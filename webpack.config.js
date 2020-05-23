@@ -9,7 +9,10 @@ module.exports = {
   entry: './src/index.ts',
   module: {
     rules: [
-      { test: /\.tsx$/, use: 'ts-loader', exclude: /node_modules/ },
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+      },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
@@ -29,7 +32,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin(),
     new CopyPlugin({
-      patterns: [{ from: 'public', to: 'public' }],
+      patterns: [{ from: 'assets', to: 'assets' }],
     }),
   ],
 };
