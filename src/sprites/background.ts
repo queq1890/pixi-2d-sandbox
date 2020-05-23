@@ -66,7 +66,7 @@ export const resizeBg = () => {
   });
 };
 
-export const handleKeydown = (event: KeyboardEvent) => {
+export const keydownBg = (event: KeyboardEvent) => {
   switch (event.keyCode) {
     case 39: {
       bgSpeed -= 1;
