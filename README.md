@@ -2,10 +2,14 @@
 
 PixiJS example app with TypeScript and Redux
 
-- Redux
-
 ## Roadmap
-
+- [x] background
+  - [x] show background image
+  - [x] parallax scrolling
+- [x] player
+  - [x] show player
+  - [x] walk
+  - [x] animate player
 - [ ] better interactivity
   - [ ] support multiple key press
   - [ ] jump
