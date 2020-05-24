@@ -6,14 +6,15 @@ export const app = new Application({
   backgroundColor: 0xaaaaaa,
 });
 
-export const resizeApp = () => {
+export const resizeApp = (): void => {
   app.renderer.resize(window.innerWidth, window.innerHeight);
 };
 
-export const prepareAssets = () => {
+export const prepareAssets = (): void => {
   app.loader.baseUrl = '../assets';
   app.loader
     .add('bgBack', 'back-trees.png')
     .add('bgMiddle', 'middle-trees.png')
-    .add('bgFront', 'front-trees.png');
+    .add('bgFront', 'front-trees.png')
+    .add('playerSheet', 'player-sheet.png');
 };

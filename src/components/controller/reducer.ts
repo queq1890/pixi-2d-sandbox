@@ -21,11 +21,9 @@ const slice = createSlice({
   initialState,
   reducers: {
     keydown: (state, action: PayloadAction<ALLOWED_KEY_TYPE>) => {
-      console.log('prevState', state.keys);
       state.keys[action.payload] = true;
     },
     keyup: (state, action: PayloadAction<ALLOWED_KEY_TYPE>) => {
-      console.log('prevState', state.keys);
       state.keys[action.payload] = false;
     },
   },

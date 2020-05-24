@@ -39,8 +39,9 @@ const createBg = (texture: Texture) => {
   return tiling;
 };
 
-export const updateBg = () => {
-  store.dispatch(actions.incrementBgX());
+export const updateBg = (): void => {
+  // uncomment this to auto scroll
+  // store.dispatch(actions.incrementBgX());
   const { x } = store.getState().background;
 
   bgFront.tilePosition.x = x;
@@ -71,15 +72,15 @@ export const resizeBg = (): void => {
 export const keydownBg = (event: KeyboardEvent): void => {
   switch (event.keyCode) {
     case KEY_MAP.right: {
-      store.dispatch(actions.decrementBgSpeed());
+      store.dispatch(actions.decrementBgX());
       break;
     }
     case KEY_MAP.left: {
-      store.dispatch(actions.incrementBgSpeed());
+      store.dispatch(actions.incrementBgX());
       break;
     }
     case KEY_MAP.space: {
-      store.dispatch(actions.setSpeed(0));
+      // store.dispatch(actions.setSpeed(0));
       break;
     }
     default:

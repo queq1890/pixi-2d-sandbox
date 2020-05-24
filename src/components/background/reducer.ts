@@ -8,7 +8,7 @@ interface BackgroundState {
 
 const initialState: BackgroundState = {
   x: 0,
-  speed: 1,
+  speed: 4,
 };
 
 const slice = createSlice({
@@ -17,6 +17,9 @@ const slice = createSlice({
   reducers: {
     incrementBgX: (state) => {
       state.x += state.speed;
+    },
+    decrementBgX: (state) => {
+      state.x -= state.speed;
     },
     incrementBgSpeed: (state) => {
       state.speed += 1;
