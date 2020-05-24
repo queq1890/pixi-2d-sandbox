@@ -24,6 +24,11 @@ const createPlayerSheet = (url: string) => {
   playerSheet = {
     idle: [
       new Texture(sheet, new Rectangle(w * 0, h * 0, w, h)),
+      new Texture(sheet, new Rectangle(w * 0, h * 0, w, h)),
+      new Texture(sheet, new Rectangle(w * 0, h * 0, w, h)),
+      new Texture(sheet, new Rectangle(w * 1, h * 0, w, h)),
+      new Texture(sheet, new Rectangle(w * 1, h * 0, w, h)),
+      new Texture(sheet, new Rectangle(w * 1, h * 0, w, h)),
       new Texture(sheet, new Rectangle(w * 1, h * 0, w, h)),
     ],
     walk: [
