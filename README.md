@@ -1,9 +1,7 @@
-## pixi-2d-sandbox
+# pixi-2d-sandbox
 
-example webgl 2d scroll app with:
+PixiJS example app with TypeScript and Redux
 
-- TypeScript
-- PixiJS
 - Redux
 
 ## Roadmap
