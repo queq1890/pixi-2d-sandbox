@@ -1,15 +1,11 @@
 import { TilingSprite, Texture } from 'pixi.js';
-import { app } from '../app';
-import { store } from '../reducers';
-import { actions } from '../reducers/background';
-import { BG_SIZE, KEY_MAP } from '../constnats';
+import { app } from '../../app';
+import { store } from '../../reducer';
+import { actions } from './reducer';
+import { BG_SIZE } from './constants';
+import { KEY_MAP } from '../controller/constants';
 
 // TODO: stop using let
-// reorganize file structure
-// - src/components
-//  - index
-//  - events
-//  - reducers
 
 let bgBack: TilingSprite;
 let bgMiddle: TilingSprite;

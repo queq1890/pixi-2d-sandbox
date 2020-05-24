@@ -3,7 +3,7 @@ import 'normalize.css';
 import './index.css';
 import { app, resizeApp, prepareAssets } from './app';
 import { registerEvents } from './registerEvents';
-import { updateBg, initBackground } from './sprites/background';
+import { updateBg, initBackground } from './components/background';
 
 // TODO: create domain model for each object
 // handle state logic with redux

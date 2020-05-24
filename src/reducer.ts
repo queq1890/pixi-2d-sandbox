@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { reducer as controller } from './controller';
-import { reducer as background } from './background';
+import { reducer as controller } from './components/controller/reducer';
+import { reducer as background } from './components/background/reducer';
 
 export const rootReducer = combineReducers({
   controller,

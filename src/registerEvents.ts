@@ -1,11 +1,13 @@
 import { resizeApp } from './app';
-import { resizeBg, keydownBg } from './sprites/background';
-import { KEY_MAP, ALLOWED_KEY_VALUE, ALLOWED_KEYS } from './constnats';
+import { resizeBg, keydownBg } from './components/background';
+import { KEY_MAP, ALLOWED_KEY_VALUE, ALLOWED_KEYS } from './components/controller/constants';
 
-import { actions as controllerActions } from './reducers/controller';
-import { store } from './reducers';
+import { actions as controllerActions } from './components/controller/reducer';
+import { store } from './reducer';
 
 const resize = () => {
+  // TODO: optimize resize ratio
+  // see http://www.rocketshipgames.com/blogs/tjkopena/2015/09/basic-scaling-animation-and-parallax-in-pixi-js-v3/
   resizeApp();
   resizeBg();
 };
