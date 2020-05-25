@@ -1,4 +1,10 @@
-import { BaseTexture, Texture, Rectangle, AnimatedSprite } from 'pixi.js';
+import {
+  BaseTexture,
+  Texture,
+  Rectangle,
+  AnimatedSprite,
+  Ticker,
+} from 'pixi.js';
 import { app } from '../../app';
 import { store } from '../../reducer';
 import { PlayerState, actions } from './reducer';
@@ -69,6 +75,38 @@ export const initPlayer = (): void => {
   player.play();
 };
 
+const jump = () => {
+  const axis = 'y';
+  const direction = -1;
+  const gravity = 1;
+  const power = 20;
+  const jumpAt = player[axis];
+  const { jumping } = store.getState().player;
+  let time = 0;
+
+  if (jumping) return;
+
+  store.dispatch(actions.jump());
+
+  const tick = (deltaMs: any) => {
+    const jumpHeight = (-gravity / 2) * Math.pow(time, 2) + power * time;
+
+    if (jumpHeight < 0) {
+      store.dispatch(actions.land());
+      Ticker.shared.remove(tick);
+      store.dispatch(actions.setY(jumpAt));
+
+      return;
+    }
+
+    store.dispatch(actions.setY(jumpAt + jumpHeight * direction));
+
+    time += deltaMs;
+  };
+
+  Ticker.shared.add(tick);
+};
+
 const handleTextureUpdate = (playerState: PlayerState) => {
   const { lastKeyboardEvent, walkingStatus } = playerState;
 
@@ -89,6 +127,9 @@ const hadnleDirectionUpdate = (controllerState: ControllerState) => {
   const { keys } = controllerState;
   const currentDirection = Math.sign(player.scale.x) === -1 ? 'left' : 'right';
 
+  if (keys.space) {
+    jump();
+  }
   if (keys.right) {
     store.dispatch(actions.incrementX());
     if (currentDirection === 'left') player.scale.x *= -1;
@@ -120,14 +161,18 @@ export const resizePlayer = (): void => {
 export const keyupPlayer = (event: KeyboardEvent): void => {
   const { keys } = store.getState().controller;
   const targetKey = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
-  if (targetKey === 'space') {
-    // TOOD: implement space action
+  if (targetKey === 'up' || targetKey === 'down') {
+    // TOOD: up down action
+
     return;
   }
   if (!targetKey) return;
 
+  // TODO: replace targetKeys with keys this guard when implementing up down actions
+  const targetKeys = [keys.right, keys.left, keys.space];
+
   const isOnlyOneKeyPressed =
-    Object.values(keys).filter((key) => key).length === 1;
+    Object.values(targetKeys).filter((key) => key).length === 1;
 
   if (targetKey && keys[targetKey] && isOnlyOneKeyPressed)
     store.dispatch(actions.setLastKeyboardEvent('keyup'));
@@ -135,8 +180,8 @@ export const keyupPlayer = (event: KeyboardEvent): void => {
 
 export const keydownPlayer = (event: KeyboardEvent): void => {
   const targetKey = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
-  if (targetKey === 'space') {
-    // TOOD: implement space action
+  if (targetKey === 'up' || targetKey === 'down') {
+    // TOOD: up down action
 
     return;
   }

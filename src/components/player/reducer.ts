@@ -10,6 +10,7 @@ export interface PlayerState {
   speed: number;
   walkingStatus: WalikinStatus;
   lastKeyboardEvent: LastKeyboardEvent;
+  jumping: boolean;
 }
 
 const initialState: PlayerState = {
@@ -18,12 +19,19 @@ const initialState: PlayerState = {
   speed: 1,
   walkingStatus: 'idle',
   lastKeyboardEvent: null,
+  jumping: false,
 };
 
 const slice = createSlice({
   name: 'player',
   initialState,
   reducers: {
+    jump: (state) => {
+      state.jumping = true;
+    },
+    land: (state) => {
+      state.jumping = false;
+    },
     incrementX: (state) => {
       state.x += state.speed;
     },
