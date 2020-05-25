@@ -3,7 +3,8 @@ import { app } from '../../app';
 import { store } from '../../reducer';
 import { actions } from './reducer';
 import { BG_SIZE } from './constants';
-import { KEY_MAP } from '../controller/constants';
+import { KEY_MAP, ALLOWED_KEYS } from '../controller/constants';
+import { ControllerState } from '../controller/reducer';
 
 // TODO: stop using let
 
@@ -39,10 +40,20 @@ const createBg = (texture: Texture) => {
   return tiling;
 };
 
+const hadnleDirectionUpdate = (controllerState: ControllerState) => {
+  const { keys } = controllerState;
+
+  if (keys.right) {
+    store.dispatch(actions.decrementBgX());
+  } else if (keys.left) {
+    store.dispatch(actions.incrementBgX());
+  }
+};
+
 export const updateBg = (): void => {
-  // uncomment this to auto scroll
-  // store.dispatch(actions.incrementBgX());
-  const { x } = store.getState().background;
+  const { controller, background } = store.getState();
+  const { x } = background;
+  hadnleDirectionUpdate(controller);
 
   bgFront.tilePosition.x = x;
   bgMiddle.tilePosition.x = x / 2;
@@ -69,20 +80,26 @@ export const resizeBg = (): void => {
   });
 };
 
-export const keydownBg = (event: KeyboardEvent): void => {
-  switch (event.keyCode) {
-    case KEY_MAP.right: {
-      store.dispatch(actions.decrementBgX());
-      break;
-    }
-    case KEY_MAP.left: {
-      store.dispatch(actions.incrementBgX());
-      break;
-    }
-    case KEY_MAP.space: {
-      // store.dispatch(actions.setSpeed(0));
-      break;
-    }
-    default:
+export const keyupBg = (event: KeyboardEvent): void => {
+  const { keys } = store.getState().controller;
+  const targetKey = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
+  if (targetKey === 'space') {
+    // TOOD: implement space action
+
+    return;
   }
+
+  if (targetKey && keys[targetKey])
+    store.dispatch(actions.setLastKeyboardEvent('keyup'));
+};
+
+export const keydownBg = (event: KeyboardEvent): void => {
+  const targetKey = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
+  if (targetKey === 'space') {
+    // TOOD: implement space action
+
+    return;
+  }
+
+  store.dispatch(actions.setLastKeyboardEvent('keydown'));
 };

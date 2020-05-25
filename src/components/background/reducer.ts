@@ -1,14 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { LastKeyboardEvent } from '../../types';
 
 interface BackgroundState {
   x: number;
   speed: number;
+  lastKeyboardEvent: LastKeyboardEvent;
 }
 
 const initialState: BackgroundState = {
   x: 0,
   speed: 4,
+  lastKeyboardEvent: null,
 };
 
 const slice = createSlice({
@@ -29,6 +32,9 @@ const slice = createSlice({
     },
     setSpeed: (state, action: PayloadAction<number>) => {
       state.speed = action.payload;
+    },
+    setLastKeyboardEvent: (state, action: PayloadAction<LastKeyboardEvent>) => {
+      state.lastKeyboardEvent = action.payload;
     },
   },
 });

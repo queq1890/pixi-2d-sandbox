@@ -11,7 +11,7 @@ PixiJS example app with TypeScript and Redux
   - [x] walk
   - [x] animate player
 - [ ] better interactivity
-  - [ ] support multiple key press
+  - [x] support multiple key press
   - [ ] jump
   - [ ] optimize camera
 - [ ] interactive objects

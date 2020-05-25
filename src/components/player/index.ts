@@ -75,14 +75,13 @@ const handleTextureUpdate = (playerState: PlayerState) => {
   if (lastKeyboardEvent === 'keyup' && walkingStatus === 'walk') {
     player.textures = playerSheet.idle;
     store.dispatch(actions.setWalkingStatus('idle'));
-    if (!player.playing) player.play();
   }
 
   if (lastKeyboardEvent === 'keydown' && walkingStatus === 'idle') {
     player.textures = playerSheet.walk;
     store.dispatch(actions.setWalkingStatus('walk'));
-    if (!player.playing) player.play();
   }
+
   if (!player.playing) player.play();
 };
 
@@ -123,11 +122,14 @@ export const keyupPlayer = (event: KeyboardEvent): void => {
   const targetKey = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
   if (targetKey === 'space') {
     // TOOD: implement space action
-
     return;
   }
+  if (!targetKey) return;
 
-  if (targetKey && keys[targetKey])
+  const isOnlyOneKeyPressed =
+    Object.values(keys).filter((key) => key).length === 1;
+
+  if (targetKey && keys[targetKey] && isOnlyOneKeyPressed)
     store.dispatch(actions.setLastKeyboardEvent('keyup'));
 };
 

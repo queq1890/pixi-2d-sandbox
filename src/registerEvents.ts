@@ -1,6 +1,6 @@
 import { resizeApp } from './app';
 import { store } from './reducer';
-import { resizeBg, keydownBg } from './components/background';
+import { resizeBg, keydownBg, keyupBg } from './components/background';
 import {
   KEY_MAP,
   ALLOWED_KEY_VALUE,
@@ -21,9 +21,10 @@ const keydown = (event: KeyboardEvent) => {
   if (!ALLOWED_KEY_VALUE.some((num) => num === event.keyCode)) return;
   const key = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
   if (key) {
-    store.dispatch(controllerActions.keydown(key));
     keydownBg(event);
     keydownPlayer(event);
+
+    store.dispatch(controllerActions.keydown(key));
   }
 };
 
@@ -31,8 +32,10 @@ const keyup = (event: KeyboardEvent) => {
   if (!ALLOWED_KEY_VALUE.some((num) => num === event.keyCode)) return;
   const key = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
   if (key) {
-    store.dispatch(controllerActions.keyup(key));
+    keyupBg(event);
     keyupPlayer(event);
+
+    store.dispatch(controllerActions.keyup(key));
   }
 };
 
