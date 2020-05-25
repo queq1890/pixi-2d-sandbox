@@ -1,9 +1,10 @@
 import { BaseTexture, Texture, Rectangle, AnimatedSprite } from 'pixi.js';
 import { app } from '../../app';
 import { store } from '../../reducer';
-import { actions } from './reducer';
+import { PlayerState, actions } from './reducer';
 import { PLAYER_SIZE, BUFFER_HEIGHT } from './constants';
-import { KEY_MAP } from '../controller/constants';
+import { ControllerState } from '../controller/reducer';
+import { KEY_MAP, ALLOWED_KEYS } from '../controller/constants';
 
 let player: AnimatedSprite;
 let playerSheet: {
@@ -68,12 +69,44 @@ export const initPlayer = (): void => {
   player.play();
 };
 
-export const updatePlayer = (): void => {
-  const { x, y, direction: nextDirection } = store.getState().player;
+const handleTextureUpdate = (playerState: PlayerState) => {
+  const { lastKeyboardEvent, walkingStatus } = playerState;
+
+  if (lastKeyboardEvent === 'keyup' && walkingStatus === 'walk') {
+    player.textures = playerSheet.idle;
+    store.dispatch(actions.setWalkingStatus('idle'));
+    if (!player.playing) player.play();
+  }
+
+  if (lastKeyboardEvent === 'keydown' && walkingStatus === 'idle') {
+    player.textures = playerSheet.walk;
+    store.dispatch(actions.setWalkingStatus('walk'));
+    if (!player.playing) player.play();
+  }
+  if (!player.playing) player.play();
+};
+
+const hadnleDirectionUpdate = (controllerState: ControllerState) => {
+  const { keys } = controllerState;
   const currentDirection = Math.sign(player.scale.x) === -1 ? 'left' : 'right';
+
+  if (keys.right) {
+    store.dispatch(actions.incrementX());
+    if (currentDirection === 'left') player.scale.x *= -1;
+  } else if (keys.left) {
+    store.dispatch(actions.decrementX());
+    if (currentDirection === 'right') player.scale.x *= -1;
+  }
+};
+
+export const updatePlayer = (): void => {
+  const { player: playerState, controller: controllerState } = store.getState();
+  const { x, y } = playerState;
+  hadnleDirectionUpdate(controllerState);
+  handleTextureUpdate(playerState);
+
   player.x = x;
   player.y = y;
-  if (currentDirection !== nextDirection) player.scale.x *= -1;
 };
 
 export const resizePlayer = (): void => {
@@ -85,40 +118,26 @@ export const resizePlayer = (): void => {
     actions.setY(app.screen.height - PLAYER_SIZE.HEIGHT * ratio - BUFFER_HEIGHT)
   );
 };
+export const keyupPlayer = (event: KeyboardEvent): void => {
+  const { keys } = store.getState().controller;
+  const targetKey = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
+  if (targetKey === 'space') {
+    // TOOD: implement space action
 
-export const keyupPlayer = (): void => {
-  const { walkingStatus } = store.getState().player;
-
-  if (!player.playing || walkingStatus === 'walk') {
-    player.textures = playerSheet.idle;
-    player.play();
-    store.dispatch(actions.setWalkingStatus('idle'));
+    return;
   }
+
+  if (targetKey && keys[targetKey])
+    store.dispatch(actions.setLastKeyboardEvent('keyup'));
 };
 
 export const keydownPlayer = (event: KeyboardEvent): void => {
-  const { walkingStatus } = store.getState().player;
+  const targetKey = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
+  if (targetKey === 'space') {
+    // TOOD: implement space action
 
-  switch (event.keyCode) {
-    case KEY_MAP.right: {
-      if (!player.playing || walkingStatus === 'idle') {
-        player.textures = playerSheet.walk;
-        player.play();
-        store.dispatch(actions.setWalkingStatus('walk'));
-      }
-
-      store.dispatch(actions.incrementX());
-      break;
-    }
-    case KEY_MAP.left: {
-      if (!player.playing || walkingStatus === 'idle') {
-        player.textures = playerSheet.walk;
-        player.play();
-        store.dispatch(actions.setWalkingStatus('walk'));
-      }
-      store.dispatch(actions.decrementX());
-      break;
-    }
-    default:
+    return;
   }
+
+  store.dispatch(actions.setLastKeyboardEvent('keydown'));
 };

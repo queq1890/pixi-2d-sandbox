@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ALLOWED_KEY_TYPE } from './constants';
 
-interface ControllerState {
+export interface ControllerState {
   keys: Record<ALLOWED_KEY_TYPE, boolean>;
 }
 

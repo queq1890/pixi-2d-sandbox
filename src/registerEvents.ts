@@ -32,8 +32,7 @@ const keyup = (event: KeyboardEvent) => {
   const key = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
   if (key) {
     store.dispatch(controllerActions.keyup(key));
-    keyupPlayer();
-    // keydownBg(event);
+    keyupPlayer(event);
   }
 };
 

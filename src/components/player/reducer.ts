@@ -3,13 +3,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type Direction = 'right' | 'left';
 type WalikinStatus = 'idle' | 'walk';
+type LastKeyboardEvent = 'keyup' | 'keydown' | null;
 
-interface PlayerState {
+export interface PlayerState {
   x: number;
   y: number;
   direction: Direction;
   speed: number;
   walkingStatus: WalikinStatus;
+  lastKeyboardEvent: LastKeyboardEvent;
 }
 
 const initialState: PlayerState = {
@@ -18,6 +20,7 @@ const initialState: PlayerState = {
   direction: 'right',
   speed: 1,
   walkingStatus: 'idle',
+  lastKeyboardEvent: null,
 };
 
 const slice = createSlice({
@@ -49,6 +52,9 @@ const slice = createSlice({
     },
     setWalkingStatus: (state, action: PayloadAction<WalikinStatus>) => {
       state.walkingStatus = action.payload;
+    },
+    setLastKeyboardEvent: (state, action: PayloadAction<LastKeyboardEvent>) => {
+      state.lastKeyboardEvent = action.payload;
     },
   },
 });

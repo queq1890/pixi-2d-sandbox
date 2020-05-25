@@ -7,7 +7,6 @@ import { updateBg, initBackground } from './components/background';
 import { initPlayer, updatePlayer } from './components/player';
 
 // TODO: create domain model for each object
-// handle state logic with redux
 
 const gameLoop = () => {
   updateBg();
