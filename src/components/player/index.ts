@@ -88,8 +88,8 @@ const jump = () => {
 
   store.dispatch(actions.jump());
 
-  const tick = (deltaMs: any) => {
-    const jumpHeight = (-gravity / 2) * Math.pow(time, 2) + power * time;
+  const tick = (deltaMs: number) => {
+    const jumpHeight = (-gravity / 2) * time ** 2 + power * time;
 
     if (jumpHeight < 0) {
       store.dispatch(actions.land());
