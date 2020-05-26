@@ -3,7 +3,7 @@ import { app } from '../../app';
 import { store } from '../../reducer';
 import { actions } from './reducer';
 import { BG_SIZE } from './constants';
-import { KEY_MAP, ALLOWED_KEYS } from '../controller/constants';
+import { ALLOWED_KEY_TYPE } from '../controller/constants';
 import { ControllerState } from '../controller/reducer';
 
 // TODO: stop using let
@@ -80,21 +80,18 @@ export const resizeBg = (): void => {
   });
 };
 
-export const keyupBg = (event: KeyboardEvent): void => {
+export const keyupBg = (targetKey: ALLOWED_KEY_TYPE): void => {
   const { keys } = store.getState().controller;
-  const targetKey = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
   if (targetKey === 'space') {
     // TOOD: implement space action
 
     return;
   }
 
-  if (targetKey && keys[targetKey])
-    store.dispatch(actions.setLastKeyboardEvent('keyup'));
+  if (keys[targetKey]) store.dispatch(actions.setLastKeyboardEvent('keyup'));
 };
 
-export const keydownBg = (event: KeyboardEvent): void => {
-  const targetKey = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
+export const keydownBg = (targetKey: ALLOWED_KEY_TYPE): void => {
   if (targetKey === 'space') {
     // TOOD: implement space action
 

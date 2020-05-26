@@ -1,11 +1,7 @@
 import { resizeApp } from './app';
 import { store } from './reducer';
+import { isInvalidKey, findKey } from './utils/keyboard';
 import { resizeBg, keydownBg, keyupBg } from './components/background';
-import {
-  KEY_MAP,
-  ALLOWED_KEY_VALUE,
-  ALLOWED_KEYS,
-} from './components/controller/constants';
 import { actions as controllerActions } from './components/controller/reducer';
 import { resizePlayer, keydownPlayer, keyupPlayer } from './components/player';
 
@@ -18,22 +14,22 @@ const resize = () => {
 };
 
 const keydown = (event: KeyboardEvent) => {
-  if (!ALLOWED_KEY_VALUE.some((num) => num === event.keyCode)) return;
-  const key = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
+  if (isInvalidKey(event)) return;
+  const key = findKey(event);
   if (key) {
-    keydownBg(event);
-    keydownPlayer(event);
+    keydownBg(key);
+    keydownPlayer(key);
 
     store.dispatch(controllerActions.keydown(key));
   }
 };
 
 const keyup = (event: KeyboardEvent) => {
-  if (!ALLOWED_KEY_VALUE.some((num) => num === event.keyCode)) return;
-  const key = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
+  if (isInvalidKey(event)) return;
+  const key = findKey(event);
   if (key) {
-    keyupBg(event);
-    keyupPlayer(event);
+    keyupBg(key);
+    keyupPlayer(key);
 
     store.dispatch(controllerActions.keyup(key));
   }

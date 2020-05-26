@@ -10,7 +10,7 @@ import { store } from '../../reducer';
 import { PlayerState, actions } from './reducer';
 import { PLAYER_SIZE, BUFFER_HEIGHT } from './constants';
 import { ControllerState } from '../controller/reducer';
-import { KEY_MAP, ALLOWED_KEYS } from '../controller/constants';
+import { ALLOWED_KEY_TYPE } from '../controller/constants';
 
 let player: AnimatedSprite;
 let playerSheet: {
@@ -158,15 +158,13 @@ export const resizePlayer = (): void => {
     actions.setY(app.screen.height - PLAYER_SIZE.HEIGHT * ratio - BUFFER_HEIGHT)
   );
 };
-export const keyupPlayer = (event: KeyboardEvent): void => {
+export const keyupPlayer = (targetKey: ALLOWED_KEY_TYPE): void => {
   const { keys } = store.getState().controller;
-  const targetKey = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
   if (targetKey === 'up' || targetKey === 'down') {
     // TOOD: up down action
 
     return;
   }
-  if (!targetKey) return;
 
   // TODO: replace targetKeys with keys this guard when implementing up down actions
   const targetKeys = [keys.right, keys.left, keys.space];
@@ -178,8 +176,7 @@ export const keyupPlayer = (event: KeyboardEvent): void => {
     store.dispatch(actions.setLastKeyboardEvent('keyup'));
 };
 
-export const keydownPlayer = (event: KeyboardEvent): void => {
-  const targetKey = ALLOWED_KEYS.find((k) => KEY_MAP[k] === event.keyCode);
+export const keydownPlayer = (targetKey: ALLOWED_KEY_TYPE): void => {
   if (targetKey === 'up' || targetKey === 'down') {
     // TOOD: up down action
 
