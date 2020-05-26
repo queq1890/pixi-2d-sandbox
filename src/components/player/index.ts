@@ -36,7 +36,6 @@ const createPlayerSheet = (url: string) => {
       new Texture(sheet, new Rectangle(w * 1, h * 0, w, h)),
       new Texture(sheet, new Rectangle(w * 1, h * 0, w, h)),
       new Texture(sheet, new Rectangle(w * 1, h * 0, w, h)),
-      new Texture(sheet, new Rectangle(w * 1, h * 0, w, h)),
     ],
     walk: [
       new Texture(sheet, new Rectangle(w * 1, h * 1, w, h)),
