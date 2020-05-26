@@ -1,8 +1,7 @@
 import { resizeApp } from './app';
-import { store } from './reducer';
 import { isInvalidKey, findKey } from './utils/keyboard';
 import { resizeBg, keydownBg, keyupBg } from './components/background';
-import { actions as controllerActions } from './components/controller/reducer';
+import { keydownController, keyupController } from './components/controller';
 import { resizePlayer, keydownPlayer, keyupPlayer } from './components/player';
 
 const resize = () => {
@@ -19,8 +18,7 @@ const keydown = (event: KeyboardEvent) => {
   if (key) {
     keydownBg(key);
     keydownPlayer(key);
-
-    store.dispatch(controllerActions.keydown(key));
+    keydownController(key);
   }
 };
 
@@ -30,8 +28,7 @@ const keyup = (event: KeyboardEvent) => {
   if (key) {
     keyupBg(key);
     keyupPlayer(key);
-
-    store.dispatch(controllerActions.keyup(key));
+    keyupController(key);
   }
 };
 

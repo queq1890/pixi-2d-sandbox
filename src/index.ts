@@ -20,9 +20,7 @@ const init = () => {
 };
 
 prepareAssets();
-
 app.loader.onComplete.add(init);
 app.loader.load();
-
 registerEvents();
 document.body.append(app.view);
